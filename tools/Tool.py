@@ -72,7 +72,7 @@ def is_dex(dex_file):
 
 CURR_DIR = os.path.dirname(__file__)
 
-PLATFORM = "macos" if sys.platform.index("darwin") >=0 else "linux" if sys.platform.index("linux") >=0 else "windows" 
+PLATFORM = "macos" if sys.platform.find("darwin") >=0 else "linux" if sys.platform.find("linux") >=0 else "windows" 
 
 AAPT = "%s/%s/aapt/30.0.0/aapt2"%(CURR_DIR, PLATFORM)
 ADB = "%s/%s/adb/30.0.0/adb"%(CURR_DIR, PLATFORM)
