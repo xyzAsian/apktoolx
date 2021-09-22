@@ -14,7 +14,7 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-def exec_command(cmd, log=False, allow_fail=False, status=False, allow_waring=True, doing=True):
+def exec_command(cmd, log=False, allow_fail=False, status=False, allow_waring=True, doing=True, pexception=False):
     if log :
         LOG.info("Begin exec %s"%cmd)
 
@@ -33,11 +33,12 @@ def exec_command(cmd, log=False, allow_fail=False, status=False, allow_waring=Tr
     except Exception as e:
         if not allow_fail:
             print("exec fail :\n%s%s%s"%(bcolors.FAIL, cmd, bcolors.ENDC))
+            if pexception: print("%s"%(str(e)))
             raise Exception("exec failed")
         elif allow_waring:
             print("Waring : \n%s%s%s\n"%(bcolors.FAIL, cmd, bcolors.ENDC))
-    
-    
+            if pexception: print("%s"%(str(e)))
+
     if status:
         return a,b
     else:
@@ -72,13 +73,18 @@ def is_dex(dex_file):
 
 CURR_DIR = os.path.dirname(__file__)
 
-PLATFORM = "macos" if sys.platform.index("darwin") >=0 else "linux" if sys.platform.index("linux") >=0 else "windows" 
+PLATFORM = "macos" if sys.platform.find("darwin") >=0 else "linux" if sys.platform.find("linux") >=0 else "windows" 
 
-AAPT = "%s/%s/aapt/30.0.0/aapt2"%(CURR_DIR, PLATFORM)
-ADB = "%s/%s/adb/30.0.0/adb"%(CURR_DIR, PLATFORM)
+TOOL_VER="29.0.2"
 
+AAPT = "%s/%s/%s/aapt2"%(CURR_DIR, PLATFORM, TOOL_VER)
+APK_SIGNER = "%s/%s/%s/apksigner"%(CURR_DIR, PLATFORM, TOOL_VER)
+
+#
+ADB = "%s/%s/adb"%(CURR_DIR, PLATFORM)
+
+# public
 JKS = "%s/public/debug.jks"%(CURR_DIR)
-APK_SIGNER = "%s/%s/apksigner/29.0.0/apksigner"%(CURR_DIR, PLATFORM)
 
 SMALI = "java -jar %s/public/smali-2.4.0.jar "%(CURR_DIR)
 BAKSMALI = "java -jar %s/public/baksmali-2.4.0.jar "%(CURR_DIR)
@@ -89,3 +95,5 @@ NoSignApplicationdex = "%s/public/NoSignApplication.dex"%(CURR_DIR)
 AXML="java -jar %s/public/axml-1.0.jar"%(CURR_DIR)
 
 FIX_SMALI="java -jar %s/public/fixmethod-all-1.8.jar"%(CURR_DIR)
+
+BUNDLE_TOOL="java -jar %s/public/bundletool-all-1.6.1.jar"%(CURR_DIR)

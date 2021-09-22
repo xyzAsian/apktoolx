@@ -4,7 +4,7 @@
 import os,sys
 from tools.Tool import *
 
-UNINSTALL_FILTER = ["com.github.shadowsocks", "com.github.shadowsocks.plugin.obfs_local", "com.topjohnwu.magisk","g.w.mik.erl"]
+UNINSTALL_FILTER = ["com.github.shadowsocks", "com.github.shadowsocks.plugin.obfs_local", "com.topjohnwu.magisk","qegx.xpg"]
 
 class adbx(object):
     def __init__(self, sdevice=""):
@@ -49,6 +49,10 @@ class adbx(object):
         if debug:
             D = "-D -n "
         return exec_command("%s shell am start %s %s %s/%s"%(self.adb, W, D, pkgname, launchableActivity))
+
+    @output
+    def path(self, pkgname):
+        return exec_command("adb shell pm path %s"%(pkgname), pexception=True)
 
 if __name__ == "__main__":
     pass

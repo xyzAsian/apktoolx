@@ -147,7 +147,7 @@ class apkx(object):
             self.del_sign()
             return "kill sign check success:\n%s"%outapk
         except Exception as e:
-            return "kill sign check failed"
+            return "kill sign check failed : %s"%(str(e))
         finally:
             self.clear_workspace()
 
@@ -173,7 +173,7 @@ class apkx(object):
             pass
             return "Find result:\n%s"%(same_classes)
         except Exception as e:
-            return "Find same class Error"
+            return "Find same class Error : %s"%(str(e))
         finally:
             self.clear_workspace()
 
@@ -211,11 +211,11 @@ class apkx(object):
                 raise Exception("Not support file type")
             outdir = "%s_smali"%(os.path.abspath(self.inApk)[0:-4])
             for dex in dexes :
-                exec_command("%s d %s -o %s"%(BAKSMALI, dex , outdir))
+                outdir_dex = "%s/%s"%(outdir, dex[dex.rfind('/')+1:-4])
+                exec_command("%s d %s -o %s"%(BAKSMALI, dex , outdir_dex))
             return "Apk to smali success : %s"%outdir
         except Exception as identifier:
-            raise identifier
-            return "Apk to smali error"
+            return "Apk to smali error : %s"%(str(identifier))
         finally:
             self.clear_workspace()
     
@@ -241,9 +241,8 @@ class apkx(object):
                 #typeIds=    int(exec_command("hexdump -n 100 -C %s | grep 00000040 | awk -F ' ' '{print $5$4$3$2}'"%dexpath, log=False), 16)
                 #proto=      int(exec_command("hexdump -n 100 -C %s | grep 00000040 | awk -F ' ' '{print $13$12$11$10}'" % dexpath, log=False) , 16)
             return "Total : %d"%(total_count)
-        except expression as identifier:
-            raise identifier
-            return "Calc dex method count error"
+        except Exception as identifier:
+            return "Calc dex method count error : %s"%(str(identifier))
         finally:
             self.clear_workspace()
     
@@ -269,9 +268,8 @@ class apkx(object):
                 #typeIds=    int(exec_command("hexdump -n 100 -C %s | grep 00000040 | awk -F ' ' '{print $5$4$3$2}'"%dexpath, log=False), 16)
                 #proto=      int(exec_command("hexdump -n 100 -C %s | grep 00000040 | awk -F ' ' '{print $13$12$11$10}'" % dexpath, log=False) , 16)
             return "Total : %d"%(total_count)
-        except expression as identifier:
-            raise identifier
-            return "Calc dex method count error"
+        except Exception as identifier:
+            return "Calc dex method count error : %s"%(str(identifier))
         finally:
             self.clear_workspace()
     
@@ -297,8 +295,13 @@ class apkx(object):
                 #stringids=  int(exec_command("hexdump -n 100 -C %s | grep 00000030 | awk -F ' ' '{print $13$12$11$10}'" % dexpath, log=False) , 16)
                 #proto=      int(exec_command("hexdump -n 100 -C %s | grep 00000040 | awk -F ' ' '{print $13$12$11$10}'" % dexpath, log=False) , 16)
             return "Total : %d"%(total_count)
-        except expression as identifier:
-            raise identifier
-            return "Calc dex method count error"
+        except Exception as identifier:
+            return "Calc dex method count error : %s"%(str(identifier))
         finally:
             self.clear_workspace()
+
+    def apk_path_on_device(self):
+        try:
+            self.adbx.path(self.manifest.pkgname)
+        except Exception as identifier:
+            return "Get Apk install path error : %s"%(str(identifier))

@@ -9,32 +9,38 @@ import argparse
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Yazhou.Xie's command tool")
+    # No apk param
     parser.add_argument("-ua", "--uninstall-all", dest="uninstall_all", action="store_true", help="uninstall all installed apk")
 
+    # Must apk param
     parser.add_argument("-d", "--detail", dest="detail", action="store_true", help="Display apk manifest detail")
-    parser.add_argument("-u", "--uninstall", dest="uninstall", action="store_true", help="uninstall apk")
-    parser.add_argument("-i","--install", dest="install", action="store_true", help="Install apk")
-    parser.add_argument("-ui", "--un-install", dest="uninstall_install", action="store_true", help="uninstall and install apk")
-    parser.add_argument("-s", "--start", dest="start", action="store_true", help="start LaunchableActivity")
-    parser.add_argument("-sw","--start-w", dest="start_W", action="store_true", help="start -W LaunchableActivity")
-    parser.add_argument("-sd","--start-D", dest="start_D", action="store_true", help="start -D LaunchableActivity")
-    parser.add_argument("-uis", "--un-ins-start", dest="uninstall_install_start", action="store_true", help="uninstall and install apk and start LaunchableActivity")
-    parser.add_argument("-uisw", "--un-ins-startW", dest="uninstall_install_start_W", action="store_true", help="uninstall and install apk and start -W LaunchableActivity")
-    parser.add_argument("-p", "--pm-clear", dest="pm_clear", action="store_true", help="pm clear apk")
-    parser.add_argument("-ps", "--pmclear-start", dest="pm_clear_start", action="store_true", help="pm clear apk and start LaunchableActivity")
-    parser.add_argument("-psw", "--pmclear-start-W", dest="pm_clear_start_W", action="store_true", help="pm clear apk and start -W LaunchableActivity")
-    parser.add_argument("-ks", "--kill-sign", dest="kill_sign", action="store_true", help="kill sign check for apk")
-    parser.add_argument("-si", "--sign", dest="sign", action="store_true", help="sign apk to {dirname}/ori.signed.apk")
-
-    parser.add_argument("-fsc", "--find-same-class", dest="find_same_class", action="store_true", help="find if apk have same class in diff dex")
-
     parser.add_argument("-de", "--debugable", dest="debugable", action="store_true", help="debugable apk")
-    
-    parser.add_argument("-ts", "--to-smali", dest="to_smali", action="store_true", help="Apk or dex baksmali to smali")
-
     parser.add_argument("-dmc", "--dex-method-count", dest="dex_method_count", action="store_true", help="Apk or dex method count")
     parser.add_argument("-dfc", "--dex-field-count", dest="dex_field_count", action="store_true", help="Apk or dex field count")
     parser.add_argument("-dtc", "--dex-type-count", dest="dex_type_count", action="store_true", help="Apk or dex type count")
+
+    parser.add_argument("-fsc", "--find-same-class", dest="find_same_class", action="store_true", help="find if apk have same class in diff dex")
+    
+    parser.add_argument("-i","--install", dest="install", action="store_true", help="Install apk")
+
+    parser.add_argument("-ks", "--kill-sign", dest="kill_sign", action="store_true", help="kill sign check for apk")
+
+    parser.add_argument("-p", "--pm-clear", dest="pm_clear", action="store_true", help="pm clear apk")
+    parser.add_argument("-ps", "--pmclear-start", dest="pm_clear_start", action="store_true", help="pm clear apk and start LaunchableActivity")
+    parser.add_argument("-psw", "--pmclear-start-W", dest="pm_clear_start_W", action="store_true", help="pm clear apk and start -W LaunchableActivity")
+    parser.add_argument("-pa", "--path", dest="path", action="store_true", help="pm path apk")
+
+    parser.add_argument("-s", "--start", dest="start", action="store_true", help="start LaunchableActivity")
+    parser.add_argument("-sd","--start-D", dest="start_D", action="store_true", help="start -D LaunchableActivity")
+    parser.add_argument("-si", "--sign", dest="sign", action="store_true", help="sign apk to \{dirname\}/ori.signed.apk")
+    parser.add_argument("-sw","--start-w", dest="start_W", action="store_true", help="start -W LaunchableActivity")
+
+    parser.add_argument("-ts", "--to-smali", dest="to_smali", action="store_true", help="Apk or dex baksmali to smali")
+    
+    parser.add_argument("-u", "--uninstall", dest="uninstall", action="store_true", help="uninstall apk")
+    parser.add_argument("-ui", "--un-install", dest="uninstall_install", action="store_true", help="uninstall and install apk")
+    parser.add_argument("-uis", "--un-ins-start", dest="uninstall_install_start", action="store_true", help="uninstall and install apk and start LaunchableActivity")
+    parser.add_argument("-uisw", "--un-ins-startW", dest="uninstall_install_start_W", action="store_true", help="uninstall and install apk and start -W LaunchableActivity")
     
     isNeedApk = True
     for arg in sys.argv:
@@ -82,6 +88,8 @@ if __name__ == "__main__":
     if args.pm_clear_start_W:
         apkx.pmclear()
         apkx.start(time=True)
+    if args.path:
+        apkx.apk_path_on_device()
     if args.sign:
         apkx.apksign()
     if args.kill_sign:
